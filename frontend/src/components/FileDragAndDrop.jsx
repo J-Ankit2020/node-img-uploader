@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import dropLogo from '../assets/image.svg';
 
 function FileDragAndDrop({ onUpload }) {
@@ -7,10 +7,6 @@ function FileDragAndDrop({ onUpload }) {
   useEffect(() => {
     drop.current.addEventListener('dragover', handleDragOver);
     drop.current.addEventListener('drop', handleDrop);
-    return () => {
-      drop.current.removeEventListener('dragover', handleDragOver);
-      drop.current.removeEventListener('drop', handleDrop);
-    };
   }, []);
   function handleDragOver(e) {
     e.preventDefault();
@@ -23,7 +19,7 @@ function FileDragAndDrop({ onUpload }) {
     if (files && files.length > 1) return;
 
     if (files && files.length) {
-      onUpload(files);
+      onUpload(files[0]);
     }
   }
 

@@ -1,26 +1,42 @@
-import React from 'react';
-import FileDragAndDrop from './components/FileDragAndDrop';
-import dropLogo from './assets/image.svg';
-
+import React, { useState } from 'react';
+import Home from './components/Home';
+import Loading from './components/Loading';
+import Result from './components/Result';
+import { Toaster, toast } from 'react-hot-toast';
 function App() {
-  const handleUpload = (files) => {
-    console.log(files);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUploaded, setisUploaded] = useState(false);
+  const [filename, setFilename] = useState('');
+  const url = 'http://localhost:5000';
+
+  const handleUpload = async (file) => {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append('image-file', file);
+
+    const res = await fetch('http://localhost:5000/upload', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    if (!data.success) {
+      setIsLoading(false);
+      toast.error(data.message);
+    } else {
+      const { image } = data;
+      setFilename(image.filename);
+      setIsLoading(false);
+      setisUploaded(true);
+    }
   };
 
   return (
-    <div className='w-[402px] h-[469px] rounded-xl p-4 shadow-2xl bg-[#FFFFFF] font-primary text-center flex flex-col justify-around items-center'>
-      <h1 className='text-lg '>Upload Your Image</h1>
-      <p className='text-xs text-[#828282]'>File should be Jpeg, Png,...</p>
-      <FileDragAndDrop onUpload={handleUpload} />
-      <p className='text-[#BDBDBD]'>Or</p>
-      <label
-        htmlFor='uploadBtn'
-        className='px-4 py-2 bg-[#2F80ED] text-white rounded-md cursor-pointer'
-      >
-        Choose Files
-      </label>
-      <input type='file' id='uploadBtn' className='hidden' accept='image/*' />
-    </div>
+    <>
+      <Toaster />
+      {isLoading && <Loading />}
+      {!isLoading && !isUploaded && <Home onUpload={handleUpload} />}
+      {!isLoading && isUploaded && <Result filename={filename} url={url} />}
+    </>
   );
 }
 
