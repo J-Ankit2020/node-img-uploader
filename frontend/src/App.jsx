@@ -7,14 +7,14 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setisUploaded] = useState(false);
   const [filename, setFilename] = useState('');
-  const url = 'http://localhost:5000';
+  const url = 'https://image-uploader-hwyt.onrender.com';
 
   const handleUpload = async (file) => {
     setIsLoading(true);
     const formData = new FormData();
     formData.append('image-file', file);
 
-    const res = await fetch('http://localhost:5000/upload', {
+    const res = await fetch('https://image-uploader-hwyt.onrender.com/upload', {
       method: 'POST',
       body: formData,
     });
