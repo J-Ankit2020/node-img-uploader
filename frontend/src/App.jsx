@@ -22,6 +22,7 @@ function App() {
     if (!data.success) {
       setIsLoading(false);
       toast.error(data.message);
+      setisUploaded(false);
     } else {
       const { image } = data;
       setFilename(image.filename);

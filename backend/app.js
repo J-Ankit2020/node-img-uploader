@@ -12,8 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 // Serving public directory
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(path.resolve(), './public')));
 
 // parse application/json
 app.use(bodyParser.json());
