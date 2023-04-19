@@ -1,5 +1,3 @@
-import { config } from 'dotenv';
-config();
 import express from 'express';
 import uploadRoute from './routes/upload.js';
 import bodyParser from 'body-parser';
